@@ -1,0 +1,5 @@
+---
+- hosts: wordpress
+  roles:
+    - initial
+    - php
