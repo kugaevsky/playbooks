@@ -7,10 +7,16 @@ Just to play around
 * Vagrant
 * Ansible
 
-## Run
+## Initial setup
 
 ```shell
 $ vagrant up
 $ vagrant provision
 
+```
+
+## Wordpress procisioning
+
+```
+$ ansible-playbook -i inventory.ans wordpress.yml -s --ask-sudo-pas
 ```

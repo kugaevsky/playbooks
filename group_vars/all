@@ -1,2 +1,3 @@
 admin_user: dude
 deploy_user: deploy
+apt_cache_expire: 3600

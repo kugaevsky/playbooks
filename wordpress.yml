@@ -1,6 +1,5 @@
 ---
 - hosts: wordpress
   roles:
-    - initial
     - php
     - mysql

@@ -1,0 +1,6 @@
+[initial]
+ansible.vagrant.local
+
+[wordpress]
+ansible.vagrant.local ansible_ssh_port=22023 ansible_ssh_user=dude
+
