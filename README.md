@@ -9,10 +9,8 @@ Just to play around
 
 ## Run
 
-```
-$ vagrant box add ubuntu/trusty64
+```shell
 $ vagrant up
-# echo '192.168.33.44 ansible.vagrant.local' >> /etc/hosts 
-$ ansible-playbook initial.yml -i inventory.ans -s
+$ vagrant provision
 
 ```

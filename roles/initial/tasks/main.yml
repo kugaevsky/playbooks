@@ -6,6 +6,7 @@
     update_cache=yes
     cache_valid_time=3600
   with_items:
+  - python-apt
   - zsh
   - git
   - whois
@@ -13,6 +14,14 @@
   - most
   - language-pack-ru
   - mc
+  - build-essential
+  - curl
+  - libssl-dev
+  - htop
+  - libmagick++-dev
+
+- name: Generate RU UTF8 locale
+  locale_gen: name=ru_RU.UTF-8 state=present
 
 - name: Create admin user
   user: name={{ admin_user }} comment="Admin Dude" shell=/bin/zsh generate_ssh_key=yes password={{ dude_password }} state=present
