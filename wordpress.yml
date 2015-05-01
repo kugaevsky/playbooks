@@ -3,3 +3,4 @@
   roles:
     - initial
     - php
+    - mysql
