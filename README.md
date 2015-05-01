@@ -15,7 +15,7 @@ $ vagrant provision
 
 ```
 
-## Wordpress procisioning
+## Wordpress provisioning
 
 ```
 $ ansible-playbook -i inventory.ans wordpress.yml -s --ask-sudo-pas
