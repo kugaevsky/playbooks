@@ -1,4 +1,5 @@
 ---
-- hosts: initial
+- hosts: all
+  sudo: yes
   roles:
     - initial
