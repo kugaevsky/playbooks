@@ -1,0 +1,85 @@
+---
+- name: Install common packages
+  apt:
+    name={{ item }}
+    state=present
+    update_cache=yes
+    cache_valid_time=3600
+  with_items:
+  - zsh
+  - git
+  - whois
+  - vim
+  - most
+  - language-pack-ru
+  - mc
+
+- name: Create admin user
+  user: name={{ admin_user }} comment="Admin Dude" shell=/bin/zsh generate_ssh_key=yes password={{ dude_password }} state=present
+
+- name: Create deploy user
+  user: name={{ deploy_user }} comment="Deploy Dude" shell=/bin/zsh generate_ssh_key=yes state=present
+
+- name: Add authorized keys to admin user
+  authorized_key: user={{ admin_user }} key="{{ item }}" state=present
+  with_file:
+  - public_keys/nick-id_rsa.pub
+  - public_keys/noroot-id_rsa.pub
+
+- name: Add authorized keys to deploy user
+  authorized_key: user={{ deploy_user }} key="{{ item }}" state=present
+  with_file:
+  - public_keys/nick-id_rsa.pub
+  - public_keys/noroot-id_rsa.pub
+
+- name: Add admin user to sudoers
+  lineinfile:
+    dest=/etc/sudoers
+    regexp='^{{ admin_user }} ALL'
+    line='{{ admin_user }} ALL=(ALL:ALL) ALL'
+    state=present
+
+- name: Disallow root SSH access
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    regexp='^PermitRootLogin'
+    line='PermitRootLogin no'
+    state=present
+  notify:
+    - restart ssh
+
+- name: Disallow SSH password authentication
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    regexp='^PasswordAuthentication'
+    line='PasswordAuthentication no'
+    state=present
+  notify:
+    - restart ssh
+
+- name: Disallow SSH GSS API authentication
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    regexp='^GSSAPIAuthentication'
+    line='GSSAPIAuthentication no'
+    state=present
+  notify:
+    - restart ssh
+
+- name: Change SSH port
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    regexp='^Port'
+    line='Port {{ ssh_port }}'
+    state=present
+  notify:
+    - restart ssh
+
+- name: Set users allowed to use SSH
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    regexp='^AllowUsers'
+    line='AllowUsers {{ admin_user }} {{ deploy_user }}'
+    state=present
+  notify:
+    - restart ssh
