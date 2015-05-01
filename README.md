@@ -12,5 +12,7 @@ Just to play around
 ```
 $ vagrant box add ubuntu/trusty64
 $ vagrant up
-# echo 'ansible.vagrant.local 192.168.33.44' > /etc/hosts 
+# echo '192.168.33.44 ansible.vagrant.local' >> /etc/hosts 
 $ ansible-playbook initial.yml -i inventory.ans -s
+
+```
