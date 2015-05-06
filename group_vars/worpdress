@@ -1,2 +1,3 @@
+---
 ansible_ssh_user: dude
 ansible_ssh_port: 22023

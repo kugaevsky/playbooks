@@ -1,0 +1,4 @@
+---
+default_pool: /etc/php5/fpm/pool.d/www.conf
+wordpress_pool: /etc/php5/fpm/pool.d/wordpress.conf
+wordpress_socket: /var/run/wordpress.sock

@@ -16,3 +16,51 @@
   - php5-imagick
   - php5-memcache
   - php5-readline
+  notify:
+    - restart php-fpm
+
+- name: Stat default pool
+  stat: path={{ default_pool }}
+  register: www_pool
+
+- name: Rename php-fpm pool file
+  command: mv {{ default_pool }} {{ wordpress_pool }}
+  when: www_pool.stat.exists
+  notify:
+    - restart php-fpm
+
+- name: Set php-fpm wordpress pool name
+  lineinfile:
+    dest={{ wordpress_pool }}
+    regexp='^\[\w+\]'
+    line='[wordpress]'
+    state=present
+  notify:
+    - restart php-fpm
+
+- name: Set php-fpm wordpress pool user
+  lineinfile:
+    dest={{ wordpress_pool }}
+    regexp='^user'
+    line='user = {{ deploy_user }}'
+    state=present
+  notify:
+    - restart php-fpm
+
+- name: Set php-fpm wordpress pool group
+  lineinfile:
+    dest={{ wordpress_pool }}
+    regexp='^group'
+    line='group = {{ deploy_user }}'
+    state=present
+  notify:
+    - restart php-fpm
+
+- name: Set php-fpm wordpress pool socket
+  lineinfile:
+    dest={{ wordpress_pool }}
+    regexp='^listen'
+    line='listen = {{ wordpress_socket }}'
+    state=present
+  notify:
+    - restart php-fpm
