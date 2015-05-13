@@ -1,0 +1,25 @@
+---
+- name: Create admin user
+  user: name={{ admin_user }} comment="Admin Dude" shell=/bin/zsh generate_ssh_key=yes password={{ dude_password }} state=present
+
+- name: Create deploy user
+  user: name={{ deploy_user }} comment="Deploy Dude" shell=/bin/zsh generate_ssh_key=yes state=present
+
+- name: Add authorized keys to admin user
+  authorized_key: user={{ admin_user }} key="{{ item }}" state=present
+  with_file:
+  - public_keys/nick-id_rsa.pub
+  - public_keys/noroot-id_rsa.pub
+
+- name: Add authorized keys to deploy user
+  authorized_key: user={{ deploy_user }} key="{{ item }}" state=present
+  with_file:
+  - public_keys/nick-id_rsa.pub
+  - public_keys/noroot-id_rsa.pub
+
+- name: Add admin user to sudoers
+  lineinfile:
+    dest=/etc/sudoers
+    regexp='^{{ admin_user }} ALL'
+    line='{{ admin_user }} ALL=(ALL:ALL) ALL'
+    state=present

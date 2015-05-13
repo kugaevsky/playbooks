@@ -1,0 +1,66 @@
+---
+- name: Set nginx user
+  lineinfile:
+    dest={{ default_conf }}
+    regexp='^user'
+    line='user {{ deploy_user }};'
+    state=present
+  notify:
+    - restart nginx
+
+- name: Set nginx gzip_vary
+  lineinfile:
+    dest={{ default_conf }}
+    regexp='^(\s*)\#?\sgzip_vary\s.*\;'
+    line='\tgzip_vary on;'
+    state=present
+  notify:
+    - restart nginx
+
+- name: Set nginx gzip_proxied
+  lineinfile:
+    dest={{ default_conf }}
+    regexp='^(\s*)\#?\sgzip_proxied\s.*\;'
+    line='\tgzip_proxied any;'
+    state=present
+  notify:
+    - restart nginx
+
+- name: Set nginx gzip_comp_level
+  lineinfile:
+    dest={{ default_conf }}
+    regexp='^(\s*)\#?\sgzip_comp_level\s\d\;'
+    line='\tgzip_comp_level 6;'
+    state=present
+  notify:
+    - restart nginx
+
+- name: Set nginx gzip_buffers
+  lineinfile:
+    dest={{ default_conf }}
+    regexp='^(\s*)\#?\sgzip_buffers\s.*\;'
+    line='\tgzip_buffers 16 8k;'
+    state=present
+  notify:
+    - restart nginx
+
+- name: Set nginx gzip_http_version
+  lineinfile:
+    dest={{ default_conf }}
+    regexp='^(\s*)#?\sgzip_http_version\s.*\;'
+    line='\tgzip_http_version 1.1;'
+    state=present
+  notify:
+    - restart nginx
+
+- name: Set nginx gzip_types
+  lineinfile:
+    dest={{ default_conf }}
+    regexp='^(\s*)#?\sgzip_types\s.*\;'
+    line='\tgzip_types text/plain text/css application/json text/xml application/xml application/xml+rss text/javascript application/javascript application/x-javascript image/svg+xml font/ttf font/opentype application/font-woff;'
+    state=present
+  notify:
+    - restart nginx
+
+- include: wordpress.yml
+

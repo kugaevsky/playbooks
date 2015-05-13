@@ -9,3 +9,5 @@
   - mysql-server
   - mysql-client
   - mysqltuner
+  notify:
+    - restart mysql

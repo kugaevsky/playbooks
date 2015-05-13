@@ -1,0 +1,16 @@
+---
+- name: Add latest nginx repo
+  apt_repository: repo='ppa:nginx/stable'
+
+- name: Install nginx packages
+  apt:
+    name={{ item }}
+    state=present
+    update_cache=yes
+    cache_valid_time={{ apt_cache_expire }}
+  with_items:
+  - nginx
+  notify:
+    - restart nginx
+
+- include: nginx.yml

@@ -1,0 +1,45 @@
+---
+- name: Disallow root SSH access
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    regexp='^PermitRootLogin'
+    line='PermitRootLogin no'
+    state=present
+  notify:
+    - restart ssh
+
+- name: Disallow SSH password authentication
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    regexp='^PasswordAuthentication'
+    line='PasswordAuthentication no'
+    state=present
+  notify:
+    - restart ssh
+
+- name: Disallow SSH GSS API authentication
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    regexp='^GSSAPIAuthentication'
+    line='GSSAPIAuthentication no'
+    state=present
+  notify:
+    - restart ssh
+
+- name: Change SSH port
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    regexp='^Port'
+    line='Port {{ ssh_port }}'
+    state=present
+  notify:
+    - restart ssh
+
+- name: Set users allowed to use SSH
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    regexp='^AllowUsers'
+    line='AllowUsers {{ admin_user }} {{ deploy_user }}'
+    state=present
+  notify:
+    - restart ssh

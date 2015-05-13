@@ -1,0 +1,22 @@
+---
+- name: Copy php upstream conf
+  copy:
+    src=php-upstream.conf
+    dest=/etc/nginx/conf.d/php-upstream.conf
+    owner={{ deploy_user }}
+    group={{ deploy_user }}
+  notify:
+    - restart nginx
+
+- name: Copy wordpress configs
+  file:
+    src={{ item }}
+    dest=/etc/nginx/global/{{ item }}
+    owner={{ deploy_user }}
+    group={{ deploy_user }}
+    state=directory
+  with_items:
+  - restrictions.conf
+  - wordpress-ms-subdir.conf
+  notify:
+    - restart nginx

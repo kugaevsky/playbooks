@@ -3,4 +3,3 @@ ansible.vagrant.local
 
 [wordpress]
 ansible.vagrant.local
-
