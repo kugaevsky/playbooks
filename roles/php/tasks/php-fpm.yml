@@ -36,11 +36,11 @@
   notify:
     - restart php-fpm
 
-- name: Set php-fpm wordpress pool socket
+- name: Set php-fpm wordpress pool socket listen owner
   lineinfile:
     dest={{ wordpress_pool }}
-    regexp='^listen'
-    line='listen = {{ wordpress_socket }}'
+    regexp='^listen\.owner'
+    line='listen.owner = {{ deploy_user }}'
     state=present
   notify:
     - restart php-fpm

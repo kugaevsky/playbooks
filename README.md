@@ -1,6 +1,6 @@
 # Ansible playbooks
 
-Just to play around
+Just to play around. Proof of concept
 
 ## Requirements
 
@@ -15,8 +15,16 @@ $ vagrant provision
 
 ```
 
-## Wordpress provisioning
+## Wordpress setup
 
-```
-$ ansible-playbook -i inventory.ans wordpress.yml
-```
+### Host provision
+
+Define host in inventory.ans
+
+First run
+
+    ansible-playbook -i inventory.ans wordpress.yml
+
+All further runs
+
+    ansible-playbook -i inventory.ans wordpress.yml -b --ask-become-pass

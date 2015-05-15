@@ -8,6 +8,31 @@
   notify:
     - restart nginx
 
+- name: Give deploy user permissions for www directory
+  file:
+    path=/var/www
+    state=directory
+    owner={{ deploy_user }}
+    group={{ deploy_user }}
+    recurse=yes
+
+- name: Give deploy user permissions for log directory
+  file:
+    path=/var/log/nginx
+    state=directory
+    owner={{ deploy_user }}
+    group={{ deploy_user }}
+    recurse=yes
+
+- name: Turn off nginx server tokens
+  lineinfile:
+    dest={{ default_conf }}
+    regexp='^(\s*)\#?\sserver_tokens\s.*\;'
+    line='\tserver_tokens off;'
+    state=present
+  notify:
+    - restart nginx
+
 - name: Set nginx gzip_vary
   lineinfile:
     dest={{ default_conf }}

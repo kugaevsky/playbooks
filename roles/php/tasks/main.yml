@@ -21,4 +21,21 @@
   notify:
     - restart php-fpm
 
+- name: Permit deploy user to restart php-fpm
+  lineinfile:
+    dest=/etc/sudoers
+    regexp="^{{deploy_user}}"
+    line="{{ deploy_user }}\tALL=NOPASSWD:\t/usr/sbin/service php5-fpm restart"
+    state=present
+
+- name: Install composer
+  shell: "curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer"
+
+- name: Permit deploy user run composer
+  file:
+    path=/usr/local/bin/composer
+    state=file
+    owner={{ deploy_user }}
+    group={{ deploy_user }}
+
 - include: php-fpm.yml

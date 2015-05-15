@@ -1,3 +1,7 @@
 ---
 - name: restart php-fpm
-  command: service php5-fpm restart
+  service:
+    name=php5-fpm
+    state=restarted
+    enabled=yes
+    sleep=1

@@ -8,13 +8,19 @@
   notify:
     - restart nginx
 
-- name: Copy wordpress configs
+- name: Check wordpress configs directory
   file:
+    dest=/etc/nginx/global/
+    owner={{ deploy_user }}
+    group={{ deploy_user }}
+    state=directory
+
+- name: Copy wordpress configs
+  copy:
     src={{ item }}
     dest=/etc/nginx/global/{{ item }}
     owner={{ deploy_user }}
     group={{ deploy_user }}
-    state=directory
   with_items:
   - restrictions.conf
   - wordpress-ms-subdir.conf
